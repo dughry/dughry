@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f294a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>دوجري - DUGHRY | احتياجاتك بضغطة واحدة</title>
+<style>
+  :root {
+    --primary: #0f294a;
+    --primary-light: #1d4478;
+    --accent: #c0c8d2;
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --text: #1a2433;
+    --muted: #64748b;
+    --success: #16a34a;
+    --danger: #dc2626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
+  body { background: var(--bg); color: var(--text); padding-bottom: 78px; direction: rtl; overflow-x: hidden; }
+
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: #fff;
+    padding: 14px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .logo-badge {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: linear-gradient(135deg, #e2e8f0, #94a3b8);
+    color: var(--primary); font-weight: 900; font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  .brand-text h1 { font-size: 18px; font-weight: 800; letter-spacing: 0.3px; }
+  .brand-text p { font-size: 11px; color: #dbeafe; opacity: 0.9; }
+  .gov-pill {
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+    color: #fff; padding: 6px 10px; border-radius: 20px; font-size: 12px; cursor: pointer;
+    display: flex; align-items: center; gap: 4px;
+  }
+
+  .banner {
+    margin: 12px 14px; padding: 14px 16px; border-radius: 14px;
+    background: linear-gradient(120deg, var(--primary), #2563eb);
+    color: #fff; box-shadow: 0 4px 12px rgba(15,41,74,0.18);
+  }
+  .banner h2 { font-size: 15px; margin-bottom: 4px; }
+  .banner p { font-size: 12px; opacity: 0.92; }
+
+  .loc-bar {
+    background: var(--card); margin: 0 14px 12px; padding: 10px 12px;
+    border-radius: 12px; display: flex; gap: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .loc-bar select {
+    flex: 1; padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px;
+    font-size: 13px; background: #f8fafc; color: var(--text); outline: none;
+  }
+
+  .section-title { padding: 4px 16px 8px; font-size: 15px; font-weight: 700; color: var(--primary); display: flex; justify-content: space-between; align-items: center; }
+  .grid-cats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 14px 14px;
+  }
+  .cat-card {
+    background: var(--card); border-radius: 12px; padding: 12px 8px; text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #eef2f6;
+    transition: transform 0.15s;
+  }
+  .cat-card:active { transform: scale(0.96); }
+  .cat-icon { font-size: 24px; margin-bottom: 6px; display: block; }
+  .cat-name { font-size: 12px; font-weight: 700; color: var(--text); }
+
+  .prod-list { padding: 0 14px; display: flex; flex-direction: column; gap: 10px; }
+  .prod-card {
+    background: var(--card); border-radius: 12px; padding: 12px;
+    display: flex; gap: 12px; align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eef2f6;
+  }
+  .prod-img {
+    width: 72px; height: 72px; border-radius: 10px; object-fit: cover;
+    background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0;
+  }
+  .prod-info { flex: 1; }
+  .prod-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .prod-meta { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .prod-price { font-size: 14px; font-weight: 800; color: var(--primary); }
+  .badge-avail { font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 700; }
+  .avail-yes { background: #dcfce7; color: var(--success); }
+  .avail-no { background: #fee2e2; color: var(--danger); }
+
+  .btn {
+    background: var(--primary); color: #fff; border: none; padding: 10px 14px;
+    border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; width: 100%;
+  }
+  .btn-sm { padding: 6px 10px; font-size: 12px; width: auto; }
+  .btn-outline { background: transparent; border: 1.5px solid var(--primary); color: var(--primary); }
+  .btn-success { background: var(--success); }
+  .btn-danger { background: var(--danger); }
+  .input-group { margin-bottom: 10px; }
+  .input-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: var(--muted); }
+  .input-group input, .input-group select, .input-group textarea {
+    width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 9px; font-size: 13px; background: #fff;
+  }
+  .card-box {
+    background: var(--card); margin: 12px 14px; padding: 14px; border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  /* شريط التنقل السفلي الموحد: الرئيسية، الأقسام، السلة، طلباتي، حسابي */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; height: 66px;
+    background: var(--primary); display: flex; justify-content: space-around; align-items: center;
+    box-shadow: 0 -3px 12px rgba(0,0,0,0.15); z-index: 200;
+  }
+  .nav-item {
+    flex: 1; text-align: center; color: #ffffff; text-decoration: none;
+    font-size: 11px; font-weight: 600; cursor: pointer; padding: 6px 0;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+  }
+  .nav-item span.ico { font-size: 18px; }
+  .nav-item.active { color: #ffffff; font-weight: 800; background: rgba(255,255,255,0.15); border-radius: 10px; margin: 0 3px; }
+
+  .page { display: none; }
+  .page.active { display: block; }
+  .tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 10px; }
+  .tab-btn { padding: 7px 12px; border-radius: 8px; border: 1px solid #cbd5e1; background: #fff; font-size: 12px; font-weight: 700; white-space: nowrap; cursor: pointer; }
+  .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); background: #e2e8f0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">
+    <div class="logo-badge">د</div>
+    <div class="brand-text">
+      <h1 id="hdrTitle">دوجري - DUGHRY</h1>
+      <p id="hdrSub">احتياجاتك بضغطة واحدة</p>
+    </div>
+  </div>
+  <div class="gov-pill" onclick="switchPage('home')">
+    <span>📍</span><span id="topLocLabel">كل مصر</span>
+  </div>
+</div>
+
+<!-- PAGE 1: الرئيسية -->
+<div id="page-home" class="page active">
+  <div class="banner" id="mainBanner">
+    <h2 id="bannerTitle">كل احتياجاتك في مكان واحد 🚀</h2>
+    <p id="bannerDesc">اطلب من أقرب تاجر أو فني في محافظتك ومركزك بضغطة واحدة.</p>
+  </div>
+
+  <div class="loc-bar">
+    <select id="govSelect" onchange="onGovChange()"></select>
+    <select id="centerSelect" onchange="renderProducts()"></select>
+  </div>
+
+  <div class="section-title">
+    <span>الأقسام الرئيسية</span>
+    <span style="font-size:12px;color:var(--muted);cursor:pointer" onclick="switchPage('cats')">عرض الكل</span>
+  </div>
+  <div class="grid-cats" id="homeCatsGrid"></div>
+
+  <div class="section-title">
+    <span>أحدث العروض والمنتجات</span>
+    <span id="filterReset" style="font-size:11px;color:var(--primary);cursor:pointer;display:none" onclick="resetCatFilter()">إظهار الكل ✕</span>
+  </div>
+  <div class="prod-list" id="homeProdList"></div>
+</div>
+
+<!-- PAGE 2: الأقسام -->
+<div id="page-cats" class="page">
+  <div class="section-title" style="margin-top:12px"><span>جميع أقسام دوجري</span></div>
+  <div class="grid-cats" id="allCatsGrid"></div>
+</div>
+
+<!-- PAGE 3: السلة -->
+<div id="page-cart" class="page">
+  <div class="section-title" style="margin-top:12px"><span>سلة المشتريات والطلبات</span></div>
+  <div id="cartItems" class="prod-list"></div>
+  <div class="card-box" id="cartCheckoutBox" style="display:none">
+    <div style="display:flex;justify-content:space-between;font-weight:800;margin-bottom:10px">
+      <span>الإجمالي:</span><span id="cartTotal">0 ج.م</span>
+    </div>
+    <div class="input-group"><label>اسمك</label><input id="ordName" placeholder="اكتب اسمك بالكامل"></div>
+    <div class="input-group"><label>رقم الموبايل</label><input id="ordPhone" type="tel" placeholder="01xxxxxxxxx"></div>
+    <div class="input-group"><label>العنوان بالتفصيل</label><input id="ordAddr" placeholder="الشارع / المعلم القريب"></div>
+    <button class="btn btn-success" onclick="submitOrder()">تأكيد وإرسال الطلب الآن ✅</button>
+  </div>
+</div>
+
+<!-- PAGE 4: طلباتي -->
+<div id="page-orders" class="page">
+  <div class="section-title" style="margin-top:12px"><span>سجل طلباتي</span></div>
+  <div id="ordersList" class="prod-list"></div>
+</div>
+
+<!-- PAGE 5: حسابي -->
+<div id="page-account" class="page">
+  <div class="card-box">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+      <img id="userAvatarPreview" class="avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><rect width='60' height='60' fill='%23cbd5e1'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='26'>👤</text></svg>">
+      <div>
+        <h3 id="accDisplayName" style="font-size:16px">زائر دوجري</h3>
+        <p id="accDisplayRole" style="font-size:12px;color:var(--muted)">سجّل بياناتك كعميل أو كتاجر</p>
+      </div>
+    </div>
+
+    <div class="input-group"><label>الاسم بالكامل</label><input id="accName" placeholder="الاسم"></div>
+    <div class="input-group"><label>رقم التليفون</label><input id="accPhone" type="tel" placeholder="01xxxxxxxxx"></div>
+    <div class="input-group"><label>نوع الحساب</label>
+      <select id="accRole">
+        <option value="customer">عميل (مشتري)</option>
+        <option value="merchant">تاجر / مقدم خدمة</option>
+      </select>
+    </div>
+    <div class="input-group"><label>صورة البروفايل</label><input type="file" accept="image/*" onchange="handleProfileImg(event)"></div>
+    <button class="btn" onclick="saveProfile()">حفظ بيانات الحساب</button>
+  </div>
+
+  <!-- لوحة تحكم التاجر -->
+  <div class="card-box" id="merchantPanel" style="display:none;border:2px solid var(--primary)">
+    <h3 style="font-size:15px;color:var(--primary);margin-bottom:10px">🏪 لوحة إدارة منتجات التاجر</h3>
+    <div class="input-group"><label>اسم المنتج / الخدمة</label><input id="mProdName" placeholder="مثال: طقم أدوات صحية"></div>
+    <div class="input-group"><label>السعر (ج.م)</label><input id="mProdPrice" type="number" placeholder="250"></div>
+    <div class="input-group"><label>القسم</label><select id="mProdCat"></select></div>
+    <div class="input-group"><label>صورة المنتج</label><input type="file" accept="image/*" onchange="handleProdImg(event)"></div>
+    <button class="btn btn-success" onclick="merchantAddProduct()">+ إضافة المنتج لمتجري</button>
+    <hr style="margin:12px 0;border:0;border-top:1px solid #e2e8f0">
+    <h4 style="font-size:13px;margin-bottom:8px">منتجاتي الحالية (تعديل السعر / متاح أو غير متاح):</h4>
+    <div id="merchantMyProds"></div>
+  </div>
+
+  <!-- دخول لوحة تحكم المالك -->
+  <div class="card-box">
+    <h3 style="font-size:14px;margin-bottom:8px">🔐 إدارة التطبيق (للمالك فقط)</h3>
+    <div id="ownerLoginBox">
+      <div class="input-group"><input id="ownerPassInput" type="password" placeholder="أدخل الرقم السري للمالك"></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" onclick="loginOwner()">دخول لوحة المالك</button>
+        <button class="btn btn-outline" onclick="forgotOwnerPass()">نسيت الباسورد؟</button>
+      </div>
+    </div>
+
+    <!-- لوحة تحكم المالك الكاملة -->
+    <div id="ownerDashboard" style="display:none;margin-top:10px">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="showOwnerTab('design', this)">🎨 الشكل والألوان</button>
+        <button class="tab-btn" onclick="showOwnerTab('security', this)">🔑 الباسورد والأمان</button>
+        <button class="tab-btn" onclick="showOwnerTab('merchants', this)">🏪 التجار والعملاء</button>
+        <button class="tab-btn" onclick="showOwnerTab('catsAdmin', this)">📂 الأقسام</button>
+        <button class="tab-btn" onclick="showOwnerTab('cloud', this)">☁️ الربط السحابي</button>
+      </div>
+
+      <div id="otab-design" class="otab">
+        <div class="input-group"><label>اسم التطبيق</label><input id="cfgTitle"></div>
+        <div class="input-group"><label>الشعار الفرعي</label><input id="cfgSub"></div>
+        <div class="input-group"><label>نص البانر الإعلاني</label><input id="cfgBanner"></div>
+        <div class="input-group"><label>اللون الأساسي للتطبيق</label><input id="cfgColor" type="color" value="#0f294a" style="height:42px"></div>
+        <div class="input-group"><label>رقم واتساب استقبال الطلبات</label><input id="cfgWa" placeholder="2010xxxxxxxxx"></div>
+        <button class="btn" onclick="saveOwnerDesign()">حفظ وتطبيق التعديلات فوراً</button>
+      </div>
+
+      <div id="otab-security" class="otab" style="display:none">
+        <div class="input-group"><label>الرقم السري الجديد للمالك</label><input id="newOwnerPass" placeholder="اكتب الباسورد الجديد"></div>
+        <div class="input-group"><label>رقم تليفونك لاسترجاع الباسورد عند النسيان</label><input id="ownerRecoveryPhone" type="tel" placeholder="01xxxxxxxxx"></div>
+        <button class="btn btn-success" onclick="saveOwnerSecurity()">حفظ الباسورد ورقم الاسترجاع</button>
+      </div>
+
+      <div id="otab-merchants" class="otab" style="display:none">
+        <p style="font-size:12px;color:var(--muted);margin-bottom:8px">إدارة صلاحيات التجار والعملاء المسجلين:</p>
+        <div id="ownerUsersList"></div>
+      </div>
+
+      <div id="otab-catsAdmin" class="otab" style="display:none">
+        <div style="display:flex;gap:6px;margin-bottom:8px">
+          <input id="newCatIcon" placeholder="أيقونة 🛒" style="width:70px;padding:8px;border:1px solid #cbd5e1;border-radius:8px">
+          <input id="newCatName" placeholder="اسم القسم الجديد" style="flex:1;padding:8px;border:1px solid #cbd5e1;border-radius:8px">
+          <button class="btn btn-sm" onclick="addNewCat()">إضافة</button>
+        </div>
+        <div id="ownerCatsList"></div>
+      </div>
+
+      <div id="otab-cloud" class="otab" style="display:none">
+        <div class="input-group">
+          <label>رابط قاعدة البيانات السحابية (Firebase URL)</label>
+          <input id="firebaseUrlInput" placeholder="https://your-project.firebaseio.com">
+        </div>
+        <button class="btn" onclick="saveCloudConfig()">حفظ ومزامنة الأجهزة</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- شريط التنقل السفلي: الرئيسية، الأقسام، السلة، طلباتي، حسابي -->
+<nav class="bottom-nav">
+  <div class="nav-item active" id="nav-home" onclick="switchPage('home')"><span class="ico">🏠</span><span>الرئيسية</span></div>
+  <div class="nav-item" id="nav-cats" onclick="switchPage('cats')"><span class="ico">📂</span><span>الأقسام</span></div>
+  <div class="nav-item" id="nav-cart" onclick="switchPage('cart')"><span class="ico">🛒</span><span>السلة (<span id="cartCount">0</span>)</span></div>
+  <div class="nav-item" id="nav-orders" onclick="switchPage('orders')"><span class="ico">📦</span><span>طلباتي</span></div>
+  <div class="nav-item" id="nav-account" onclick="switchPage('account')"><span class="ico">👤</span><span>حسابي</span></div>
+  </nav>
+  <script>
+const EGYPT_DATA = {
+  "كل المحافظات": ["كل المراكز"],
+  "القاهرة": ["كل المراكز", "مدينة نصر", "مصر الجديدة", "المعادي", "حلوان", "شبرا", "التجمع الخامس", "عين شمس", "الزيتون", "المرج", "المقطم"],
+  "الجيزة": ["كل المراكز", "الدقي", "المهندسين", "الهرم", "فيصل", "6 أكتوبر", "الشيخ زايد", "البدرشين", "العياط", "الصف", "أطفيح", "إمبابة", "الوراق"],
+  "المنيا": ["كل المراكز", "مركز العدوة", "مغاغة", "بني مزار", "مطاي", "سمالوط", "مدينة المنيا", "أبو قرقاص", "ملوي", "دير مواس"],
+  "الإسكندرية": ["كل المراكز", "المنتزه", "شرق", "وسط", "العجمي", "العامرية", "برج العرب"],
+  "الدقهلية": ["كل المراكز", "المنصورة", "طلخا", "ميت غمر", "السنبلاوين", "بلقاس", "دكرنس", "شربين", "المنزلة"],
+  "الشرقية": ["كل المراكز", "الزقازيق", "العاشر من رمضان", "بلبيس", "منيا القمح", "فاقوس", "أبو حماد", "الحسينية", "ههيا"],
+  "القليوبية": ["كل المراكز", "بنها", "شبرا الخيمة", "قليوب", "الخانكة", "طوخ", "قها", "كفر شكر", "العبور"],
+  "البحيرة": ["كل المراكز", "دمنهور", "كفر الدوار", "إيتاي البارود", "كوم حمادة", "أبو المطامير", "رشيد", "إدكو", "الدلنجات"],
+  "الغربية": ["كل المراكز", "طنطا", "المحلة الكبرى", "كفر الزيات", "زفتى", "السنطة", "بسيون", "قطور", "سمنود"],
+  "المنوفية": ["كل المراكز", "شبين الكوم", "منوف", "أشمون", "الباجور", "قويسنا", "تلا", "بركة السبع", "السادات"],
+  "كفر الشيخ": ["كل المراكز", "كفر الشيخ", "دسوق", "فوه", "مطوبس", "بيلا", "الحامول", "بلطيم", "سيدي سالم"],
+  "دمياط": ["كل المراكز", "دمياط", "فارسكور", "الزرقا", "كفر سعد", "رأس البر", "دمياط الجديدة"],
+  "بورسعيد": ["كل المراكز", "الشرق", "العرب", "الضواحي", "الزهور", "المناخ", "بورفؤاد"],
+  "الإسماعيلية": ["كل المراكز", "الإسماعيلية", "فايد", "القنطرة شرق", "القنطرة غرب", "التل الكبير", "أبو صوير"],
+  "السويس": ["كل المراكز", "السويس", "الأربعين", "عتاقة", "الجناين", "فيصل"],
+  "بني سويف": ["كل المراكز", "بني سويف", "الواسطى", "ناصر", "إهناسيا", "ببا", "سمسطا", "الفشن"],
+  "الفيوم": ["كل المراكز", "الفيوم", "طامية", "سنورس", "إطسا", "إبشواي", "يوسف الصديق"],
+  "أسيوط": ["كل المراكز", "أسيوط", "ديروط", "القوصية", "منفلوط", "أبو تيج", "صدفا", "الغنايم", "ساحل سليم", "البداري", "أبنوب", "الفتح"],
+  "سوهاج": ["كل المراكز", "سوهاج", "أخميم", "البلينا", "المراغة", "المنشأة", "دار السلام", "جرجا", "جهينة", "ساقلتة", "طما", "طهطا"],
+  "قنا": ["كل المراكز", "قنا", "أبو تشت", "فرشوط", "نجع حمادي", "الوقف", "دشنا", "قفط", "قوص", "نقادة"],
+  "الأقصر": ["كل المراكز", "الأقصر", "القرنة", "أرمنت", "إسنا", "الطود", "الزينية"],
+  "أسوان": ["كل المراكز", "أسوان", "دراو", "كوم أمبو", "نصر النوبة", "إدفو"],
+  "البحر الأحمر": ["كل المراكز", "الغردقة", "رأس غارب", "سفاجا", "القصير", "مرسى علم", "شلاتين", "حلايب"],
+  "الوادي الجديد": ["كل المراكز", "الخارجة", "الداخلة", "الفرافرة", "باريس", "بلاط"],
+  "مطروح": ["كل المراكز", "مرسى مطروح", "الحمام", "العلمين", "الضبعة", "النجيلة", "سيدي براني", "السلوم", "سيوة"],
+  "شمال سيناء": ["كل المراكز", "العريش", "الشيخ زويد", "رفح", "بئر العبد", "الحسنة", "نخل"],
+  "جنوب سيناء": ["كل المراكز", "الطور", "شرم الشيخ", "دهب", "نويبع", "طابا", "سانت كاترين", "أبو رديس", "أبو زنيمة"]
+};
+
+const DEFAULT_STATE = {
+  config: {
+    title: "دوجري - DUGHRY",
+    sub: "احتياجاتك بضغطة واحدة",
+    banner: "كل احتياجاتك في مكان واحد 🚀",
+    color: "#0f294a",
+    wa: "201000000000",
+    ownerPass: "1234",
+    recoveryPhone: "01000000000",
+    firebaseUrl: ""
+  },
+  cats: [
+    { id: 1, name: "سوبر ماركت", icon: "🛒" },
+    { id: 2, name: "مطاعم وأكل", icon: "🍔" },
+    { id: 3, name: "صيدليات", icon: "💊" },
+    { id: 4, name: "صيانة وفنيين", icon: "🛠️" },
+    { id: 5, name: "ملابس وأحذية", icon: "👕" },
+    { id: 6, name: "أجهزة وإلكترونيات", icon: "📱" },
+    { id: 7, name: "خضار وفاكهة", icon: "🥬" },
+    { id: 8, name: "مواد بناء", icon: "🧱" },
+    { id: 9, name: "نقل وتوصيل", icon: "🚚" },
+    { id: 10, name: "أدوات منزلية", icon: "🏠" },
+    { id: 11, name: "خدمات عامة", icon: "⭐" }
+  ],
+  products: [
+    { id: 101, name: "باقة صيانة منزلية سريعة", price: 150, catId: 4, gov: "كل المحافظات", center: "كل المراكز", available: true, icon: "🛠️", owner: "دوجري" },
+    { id: 102, name: "كرتونة احتياجات منزلية متكاملة", price: 420, catId: 1, gov: "كل المحافظات", center: "كل المراكز", available: true, icon: "🛒", owner: "دوجري" },
+    { id: 103, name: "توصيل سريع داخل المركز", price: 45, catId: 9, gov: "كل المحافظات", center: "كل المراكز", available: true, icon: "🚚", owner: "دوجري" }
+  ],
+  cart: [],
+  orders: [],
+  profile: { name: "زائر دوجري", phone: "", role: "customer", avatar: "" },
+  users: [
+    { name: "متجر الخير المحلي", phone: "01011111111", role: "merchant", active: true },
+    { name: "عميل تجريبي", phone: "01022222222", role: "customer", active: true }
+  ],
+  selectedCat: null,
+  tempProdImg: ""
+};
+
+let state = JSON.parse(localStorage.getItem('dughry_state_v3')) || DEFAULT_STATE;
+
+function saveState() {
+  localStorage.setItem('dughry_state_v3', JSON.stringify(state));
+}
+
+function applyTheme() {
+  const c = state.config.color || "#0f294a";
+  document.documentElement.style.setProperty('--primary', c);
+  document.getElementById('hdrTitle').textContent = state.config.title;
+  document.getElementById('hdrSub').textContent = state.config.sub;
+  document.getElementById('bannerTitle').textContent = state.config.banner;
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+  if (metaTheme) metaTheme.setAttribute('content', c);
+}
+
+function initLocations() {
+  const govSel = document.getElementById('govSelect');
+  govSel.innerHTML = Object.keys(EGYPT_DATA).map(g => `<option value="${g}">${g}</option>`).join('');
+  onGovChange();
+}
+
+function onGovChange() {
+  const gov = document.getElementById('govSelect').value;
+  const centerSel = document.getElementById('centerSelect');
+  const centers = EGYPT_DATA[gov] || ["كل المراكز"];
+  centerSel.innerHTML = centers.map(c => `<option value="${c}">${c}</option>`).join('');
+  document.getElementById('topLocLabel').textContent = gov === "كل المحافظات" ? "كل مصر" : gov;
+  renderProducts();
+}
+
+function renderCats() {
+  const html = state.cats.map(cat => `
+    <div class="cat-card" onclick="selectCat(${cat.id})">
+      <span class="cat-icon">${cat.icon || "📦"}</span>
+      <span class="cat-name">${cat.name}</span>
+    </div>
+  `).join('');
+  document.getElementById('homeCatsGrid').innerHTML = html;
+  document.getElementById('allCatsGrid').innerHTML = html;
+  document.getElementById('mProdCat').innerHTML = state.cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+function selectCat(catId) {
+  state.selectedCat = catId;
+  document.getElementById('filterReset').style.display = 'inline';
+  switchPage('home');
+  renderProducts();
+}
+
+function resetCatFilter() {
+  state.selectedCat = null;
+  document.getElementById('filterReset').style.display = 'none';
+  renderProducts();
+}
+
+function renderProducts() {
+  const gov = document.getElementById('govSelect').value;
+  const center = document.getElementById('centerSelect').value;
+  const filtered = state.products.filter(p => {
+    const matchCat = !state.selectedCat || p.catId === state.selectedCat;
+    const matchGov = gov === "كل المحافظات" || p.gov === "كل المحافظات" || p.gov === gov;
+    const matchCenter = center === "كل المراكز" || p.center === "كل المراكز" || p.center === center;
+    return matchCat && matchGov && matchCenter;
+  });
+
+  const listEl = document.getElementById('homeProdList');
+  if (!filtered.length) {
+    listEl.innerHTML = `<div class="card-box" style="text-align:center;color:var(--muted)">لا توجد منتجات مطابقة للاختيار الحالي.</div>`;
+    return;
+  }
+
+  listEl.innerHTML = filtered.map(p => {
+    const cat = state.cats.find(c => c.id === p.catId);
+    const imgHtml = p.img
+      ? `<img src="${p.img}" class="prod-img" alt="${p.name}">`
+      : `<div class="prod-img">${p.icon || (cat ? cat.icon : "📦")}</div>`;
+    return `
+      <div class="prod-card">
+        ${imgHtml}
+        <div class="prod-info">
+          <div class="prod-title">${p.name}</div>
+          <div class="prod-meta">${cat ? cat.name : "عام"} • ${p.gov}</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+            <span class="prod-price">${p.price} ج.م</span>
+            <span class="badge-avail ${p.available ? 'avail-yes' : 'avail-no'}">${p.available ? 'متاح' : 'غير متاح'}</span>
+          </div>
+        </div>
+        <button class="btn btn-sm ${p.available ? '' : 'btn-outline'}" ${p.available ? `onclick="addToCart(${p.id})"` : 'disabled'}>
+          ${p.available ? '+ أضف' : 'نفد'}
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+function addToCart(prodId) {
+  const prod = state.products.find(p => p.id === prodId);
+  if (!prod || !prod.available) return;
+  const existing = state.cart.find(item => item.id === prodId);
+  if (existing) existing.qty += 1;
+  else state.cart.push({ id: prod.id, name: prod.name, price: prod.price, qty: 1 });
+  saveState();
+  renderCart();
+  alert("تمت إضافة المنتج إلى السلة ✅");
+}
+
+function renderCart() {
+  document.getElementById('cartCount').textContent = state.cart.reduce((s, i) => s + i.qty, 0);
+  const box = document.getElementById('cartItems');
+  const checkoutBox = document.getElementById('cartCheckoutBox');
+
+  if (!state.cart.length) {
+    box.innerHTML = `<div class="card-box" style="text-align:center;color:var(--muted)">السلة فارغة حالياً.</div>`;
+    checkoutBox.style.display = 'none';
+    return;
+  }
+
+  checkoutBox.style.display = 'block';
+  let total = 0;
+  box.innerHTML = state.cart.map((item, idx) => {
+    total += item.price * item.qty;
+    return `
+      <div class="prod-card">
+        <div class="prod-info">
+          <div class="prod-title">${item.name}</div>
+          <div class="prod-meta">${item.price} ج.م × ${item.qty}</div>
+        </div>
+        <button class="btn btn-sm btn-danger" onclick="removeCartItem(${idx})">حذف</button>
+      </div>
+    `;
+  }).join('');
+  document.getElementById('cartTotal').textContent = `${total} ج.م`;
+}
+
+function removeCartItem(idx) {
+  state.cart.splice(idx, 1);
+  saveState();
+  renderCart();
+}
+
+function submitOrder() {
+  const name = document.getElementById('ordName').value.trim() || state.profile.name || "عميل";
+  const phone = document.getElementById('ordPhone').value.trim() || state.profile.phone || "غير محدد";
+  const addr = document.getElementById('ordAddr').value.trim() || "غير محدد";
+  const total = state.cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+  const order = {
+    id: "ORD-" + Math.floor(100000 + Math.random() * 900000),
+    date: new Date().toLocaleString('ar-EG'),
+    name, phone, addr, total,
+    items: [...state.cart],
+    status: "تم التسجيل على الجهاز"
+  };
+
+  state.orders.unshift(order);
+  state.cart = [];
+  saveState();
+  renderCart();
+  renderOrders();
+  switchPage('orders');
+  alert("تم تسجيل طلبك بنجاح في سجل طلباتك ✅");
+}
+
+function renderOrders() {
+  const el = document.getElementById('ordersList');
+  if (!state.orders.length) {
+    el.innerHTML = `<div class="card-box" style="text-align:center;color:var(--muted)">لا توجد طلبات مسجلة حتى الآن.</div>`;
+    return;
+  }
+  el.innerHTML = state.orders.map(o => `
+    <div class="card-box" style="margin:0">
+      <div style="display:flex;justify-content:space-between;font-weight:800;margin-bottom:6px">
+        <span>طلب #${o.id}</span>
+        <span style="color:var(--success)">${o.total} ج.م</span>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">${o.date} — ${o.name} (${o.phone})</div>
+      <div style="font-size:12px">العنوان: ${o.addr}</div>
+      <div style="font-size:11px;color:var(--primary);margin-top:6px">الأصناف: ${o.items.map(i => `${i.name} (${i.qty})`).join("، ")}</div>
+    </div>
+  `).join('');
+}
+
+function handleProfileImg(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    state.profile.avatar = reader.result;
+    document.getElementById('userAvatarPreview').src = reader.result;
+    saveState();
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleProdImg(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    state.tempProdImg = reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveProfile() {
+  const name = document.getElementById('accName').value.trim() || "مستخدم دوجري";
+  const phone = document.getElementById('accPhone').value.trim();
+  const role = document.getElementById('accRole').value;
+  state.profile.name = name;
+  state.profile.phone = phone;
+  state.profile.role = role;
+
+  if (!state.users.some(u => u.name === name && u.phone === phone)) {
+    state.users.push({ name, phone, role, active: true });
+  }
+  saveState();
+  syncAccountUI();
+  alert("تم حفظ بيانات الحساب ✅");
+}
+
+function syncAccountUI() {
+  document.getElementById('accName').value = state.profile.name || "";
+  document.getElementById('accPhone').value = state.profile.phone || "";
+  document.getElementById('accRole').value = state.profile.role || "customer";
+  document.getElementById('accDisplayName').textContent = state.profile.name || "زائر دوجري";
+  document.getElementById('accDisplayRole').textContent = state.profile.role === "merchant" ? "حساب تاجر / مقدم خدمة" : "حساب عميل";
+  if (state.profile.avatar) {
+    document.getElementById('userAvatarPreview').src = state.profile.avatar;
+  }
+  document.getElementById('merchantPanel').style.display = state.profile.role === "merchant" ? "block" : "none";
+  renderMerchantProducts();
+}
+
+function merchantAddProduct() {
+  const name = document.getElementById('mProdName').value.trim();
+  const price = Number(document.getElementById('mProdPrice').value);
+  const catId = Number(document.getElementById('mProdCat').value);
+  if (!name || !price) return alert("اكتب اسم المنتج والسعر أولاً");
+
+  state.products.unshift({
+    id: Date.now(),
+    name,
+    price,
+    catId,
+    gov: document.getElementById('govSelect').value,
+    center: document.getElementById('centerSelect').value,
+    available: true,
+    img: state.tempProdImg || "",
+    owner: state.profile.name || "تاجر"
+  });
+  state.tempProdImg = "";
+  document.getElementById('mProdName').value = "";
+  document.getElementById('mProdPrice').value = "";
+  saveState();
+  renderProducts();
+  renderMerchantProducts();
+  alert("تمت إضافة المنتج لمتجرك ✅");
+}
+
+function renderMerchantProducts() {
+  const el = document.getElementById('merchantMyProds');
+  if (!el) return;
+  el.innerHTML = state.products.map(p => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:12px">
+      <div><strong>${p.name}</strong> — <span>${p.price} ج.م</span></div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-sm ${p.available ? 'btn-outline' : 'btn-success'}" onclick="toggleProdAvail(${p.id})">${p.available ? 'إخفاء' : 'إتاحة'}</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteProd(${p.id})">حذف</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleProdAvail(id) {
+  const p = state.products.find(x => x.id === id);
+  if (p) p.available = !p.available;
+  saveState();
+  renderProducts();
+  renderMerchantProducts();
+}
+
+function deleteProd(id) {
+  state.products = state.products.filter(x => x.id !== id);
+  saveState();
+  renderProducts();
+  renderMerchantProducts();
+}
+
+function loginOwner() {
+  const pass = document.getElementById('ownerPassInput').value;
+  if (pass === state.config.ownerPass) {
+    document.getElementById('ownerLoginBox').style.display = 'none';
+    document.getElementById('ownerDashboard').style.display = 'block';
+    loadOwnerFields();
+  } else {
+    alert("الرقم السري غير صحيح");
+  }
+}
+
+function forgotOwnerPass() {
+  alert(`رقم الاسترجاع المسجل: ${state.config.recoveryPhone} — الرقم السري الافتراضي الحالي هو: ${state.config.ownerPass}`);
+}
+
+function showOwnerTab(tabName, btn) {
+  document.querySelectorAll('.otab').forEach(t => t.style.display = 'none');
+  document.getElementById('otab-' + tabName).style.display = 'block';
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+function loadOwnerFields() {
+  document.getElementById('cfgTitle').value = state.config.title;
+  document.getElementById('cfgSub').value = state.config.sub;
+  document.getElementById('cfgBanner').value = state.config.banner;
+  document.getElementById('cfgColor').value = state.config.color;
+  document.getElementById('cfgWa').value = state.config.wa;
+  document.getElementById('newOwnerPass').value = state.config.ownerPass;
+  document.getElementById('ownerRecoveryPhone').value = state.config.recoveryPhone;
+  document.getElementById('firebaseUrlInput').value = state.config.firebaseUrl || "";
+  renderOwnerUsers();
+  renderOwnerCats();
+}
+
+function saveOwnerDesign() {
+  state.config.title = document.getElementById('cfgTitle').value.trim() || "دوجري - DUGHRY";
+  state.config.sub = document.getElementById('cfgSub').value.trim() || "احتياجاتك بضغطة واحدة";
+  state.config.banner = document.getElementById('cfgBanner').value.trim() || "كل احتياجاتك في مكان واحد 🚀";
+  state.config.color = document.getElementById('cfgColor').value || "#0f294a";
+  state.config.wa = document.getElementById('cfgWa').value.trim();
+  saveState();
+  applyTheme();
+  alert("تم حفظ وتطبيق التعديلات فوراً ✅");
+}
+
+function saveOwnerSecurity() {
+  const np = document.getElementById('newOwnerPass').value.trim();
+  const rp = document.getElementById('ownerRecoveryPhone').value.trim();
+  if (np) state.config.ownerPass = np;
+  if (rp) state.config.recoveryPhone = rp;
+  saveState();
+  alert("تم حفظ الرقم السري ورقم الاسترجاع ✅");
+}
+
+function renderOwnerUsers() {
+  const el = document.getElementById('ownerUsersList');
+  el.innerHTML = state.users.map((u, idx) => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:12px">
+      <div><strong>${u.name}</strong> (${u.role === 'merchant' ? 'تاجر' : 'عميل'}) — ${u.phone || 'بدون رقم'}</div>
+      <button class="btn btn-sm ${u.active ? 'btn-danger' : 'btn-success'}" onclick="toggleUserActive(${idx})">${u.active ? 'تعطيل' : 'تفعيل'}</button>
+    </div>
+  `).join('');
+}
+
+function toggleUserActive(idx) {
+  state.users[idx].active = !state.users[idx].active;
+  saveState();
+  renderOwnerUsers();
+}
+
+function renderOwnerCats() {
+  const el = document.getElementById('ownerCatsList');
+  el.innerHTML = state.cats.map(c => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:12px">
+      <span>${c.icon} ${c.name}</span>
+      <button class="btn btn-sm btn-danger" onclick="deleteCat(${c.id})">حذف</button>
+    </div>
+  `).join('');
+}
+
+function addNewCat() {
+  const icon = document.getElementById('newCatIcon').value.trim() || "📦";
+  const name = document.getElementById('newCatName').value.trim();
+  if (!name) return alert("اكتب اسم القسم أولاً");
+  state.cats.push({ id: Date.now(), name, icon });
+  document.getElementById('newCatIcon').value = "";
+  document.getElementById('newCatName').value = "";
+  saveState();
+  renderCats();
+  renderOwnerCats();
+}
+
+function deleteCat(id) {
+  state.cats = state.cats.filter(c => c.id !== id);
+  saveState();
+  renderCats();
+  renderOwnerCats();
+}
+
+function saveCloudConfig() {
+  state.config.firebaseUrl = document.getElementById('firebaseUrlInput').value.trim();
+  saveState();
+  alert("تم حفظ إعدادات الربط السحابي ✅");
+}
+
+function switchPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const activeNav = document.getElementById('nav-' + pageId);
+  if (activeNav) activeNav.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+applyTheme();
+initLocations();
+renderCats();
+renderProducts();
+renderCart();
+rend
